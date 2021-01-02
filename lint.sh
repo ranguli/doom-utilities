@@ -1,4 +1,4 @@
-source_dirs=( multigen cmdlib scriplib )
+source_dirs=( multigen cmdlib scriptlib )
 
 for i in "${source_dirs[@]}"
 do

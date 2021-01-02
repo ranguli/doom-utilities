@@ -26,9 +26,6 @@ int SafeOpenRead(char *filename);
 void SafeRead(int handle, void *buffer, long count);
 void SafeWrite(int handle, void *buffer, long count);
 void *SafeMalloc(long size);
-
 long LoadFile(char *filename, void **bufferptr);
-
-extern byte *screen;
 
 #endif

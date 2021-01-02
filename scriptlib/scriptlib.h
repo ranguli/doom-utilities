@@ -1,5 +1,3 @@
-// scriplib.h
-
 #ifndef __CMDLIB__
 #include "cmdlib.h"
 #endif

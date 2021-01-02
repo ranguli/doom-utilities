@@ -1,4 +1,4 @@
-#include "scriplib.h"
+#include "scriptlib.h"
 #include "cmdlib.h"
 
 // PARSING STUFF

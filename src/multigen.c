@@ -6,7 +6,7 @@
 */
 
 #include "cmdlib.h"
-#include "scriplib.h"
+#include "scriptlib.h"
 
 typedef struct {
     long sprite;

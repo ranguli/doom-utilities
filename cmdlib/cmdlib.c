@@ -1,20 +1,7 @@
-// cmdlib.c
-
 #include "cmdlib.h"
 #include <errno.h>
 #include <string.h>
 #include <unistd.h>
-
-/*
-================
-=
-= filelength
-=
-================
-*/
-
-int myargc;
-char **myargv;
 
 int filelength(int handle) {
     struct stat fileinfo;
@@ -27,23 +14,7 @@ int filelength(int handle) {
     return fileinfo.st_size;
 }
 
-/*
-=============================================================================
-
-                                                MISC FUNCTIONS
-
-=============================================================================
-*/
-
-/*
-=================
-=
-= Error
-=
-= For abnormal program terminations
-=
-=================
-*/
+// For abnormal program terminations
 
 void Error(char *error, ...) {
     va_list argptr;
@@ -101,12 +72,3 @@ long LoadFile(char *filename, void **bufferptr) {
     *bufferptr = buffer;
     return length;
 }
-
-// Basic graphics
-
-byte *screen;
-
-#define PEL_WRITE_ADR 0x3c8
-#define PEL_READ_ADR 0x3c7
-#define PEL_DATA 0x3c9
-#define PEL_MASK 0x3c6

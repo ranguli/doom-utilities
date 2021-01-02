@@ -1,7 +1,0 @@
-#!/bin/csh -fb
-
-make	CC="cc"														\
-		CFLAGS="-g -Xcpluscomm"										\
-		LDFLAGS=""													\
-		OBJDIR="irix_obj"											
-

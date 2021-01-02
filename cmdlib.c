@@ -1,8 +1,9 @@
 // cmdlib.c
 
+#include <errno.h>
+#include <string.h>
 #include "cmdlib.h"
-
-#ifdef __NeXT__
+#include <unistd.h>
 
 /*
 ================
@@ -12,10 +13,14 @@
 ================
 */
 
+
+int myargc;
+char **myargv;
+
 int filelength (int handle)
 {
 	struct stat     fileinfo;
-    
+
 	if (fstat (handle,&fileinfo) == -1)
 	{
 		fprintf (stderr,"Error fstating");
@@ -27,7 +32,7 @@ int filelength (int handle)
 
 int tell (int handle)
 {
-	return lseek (handle, 0, L_INCR);
+	return lseek (handle, 0, SEEK_CUR);
 }
 
 char *strupr (char *start)
@@ -41,29 +46,6 @@ char *strupr (char *start)
 	}
 	return start;
 }
-
-char *getcwd (char *path, int length)
-{
-	return getwd(path);
-}
-
-#endif
-
-
-/* globals for command line args */
-#ifdef __NeXT__
-extern int NXArgc;
-extern char **NXArgv;
-#define myargc  NXArgc
-#define myargv  NXArgv
-#endif
-
-#ifdef __WATCOMC__
-extern int _argc;
-extern char **_argv;
-#define myargc  _argc
-#define myargv  _argv
-#endif
 
 
 /*
@@ -87,17 +69,11 @@ extern char **_argv;
 void Error (char *error, ...)
 {
 	va_list argptr;
-
-#ifndef __NeXT__
-	if ( *(byte *)0x449 == 0x13)
-		TextMode ();
-#endif
-
-	va_start (argptr,error);
-	vprintf (error,argptr);
-	va_end (argptr);
-	printf ("\n");
-	exit (1);
+	va_start(argptr,error);
+	vprintf(error,argptr);
+	va_end(argptr);
+	printf("\n");
+	exit(1);
 }
 
 
@@ -126,7 +102,7 @@ int CheckParm (char *check)
 			if (!*++parm)
 				continue;               // parm was only one char
 
-		if ( !stricmp(check,parm) )
+		if ( !strcasecmp(check,parm) )
 			return i;
 	}
 
@@ -140,8 +116,7 @@ int SafeOpenWrite (char *filename)
 {
 	int     handle;
 
-	handle = open(filename,O_RDWR | O_BINARY | O_CREAT | O_TRUNC
-	, 0666);
+	handle = open(filename, 0666);
 
 	if (handle == -1)
 		Error ("Error opening %s: %s",filename,strerror(errno));
@@ -153,7 +128,7 @@ int SafeOpenRead (char *filename)
 {
 	int     handle;
 
-	handle = open(filename,O_RDONLY | O_BINARY);
+	handle = open(filename, O_RDONLY);
 
 	if (handle == -1)
 		Error ("Error opening %s: %s",filename,strerror(errno));
@@ -376,11 +351,7 @@ long ParseNum (char *str)
 
 int GetKey (void)
 {
-#ifdef __NeXT__
-	return getchar ();
-#else
-	return _bios_keybrd (_KEYBRD_READ)&0xff;
-#endif
+	return getchar();
 }
 
 
@@ -494,13 +465,11 @@ byte    *screen;
 
 void GetPalette (byte *pal)
 {
-#ifndef __NeXT__
-	int     i;
+	int i;
 
-	outp (PEL_READ_ADR,0);
+	outb(PEL_READ_ADR,0);
 	for (i=0 ; i<768 ; i++)
-		pal[i] = inp (PEL_DATA)<<2;
-#endif
+		pal[i] = inb(PEL_DATA)<<2;
 }
 
 /*
@@ -518,31 +487,19 @@ void SetPalette (byte *pal)
 #ifndef __NeXT__
 	int     i;
 
-	outp (PEL_WRITE_ADR,0);
+	outb(PEL_WRITE_ADR,0);
 	for (i=0 ; i<768 ; i++)
-		outp (PEL_DATA, pal[i]>>2);
+		outb(PEL_DATA, pal[i]>>2);
 #endif
 }
 
 
 void VGAMode (void)
 {
-#ifndef __NeXT__
-union REGS      regs;           // scratch for int calls
-	regs.w.ax = 0x13;
-	int386 (0x10,(const union REGS *)&regs,&regs);
-	screen = (byte *)0xa0000;
-#else
 	screen = malloc (0x10000);
-#endif
 
 }
 
 void TextMode (void)
 {
-#ifndef __NeXT__
-union REGS      regs;           // scratch for int calls
-	regs.w.ax = 0x3;
-	int386 (0x10,(const union REGS *)&regs,&regs);
-#endif
 }

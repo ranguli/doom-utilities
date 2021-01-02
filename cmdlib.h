@@ -16,20 +16,14 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <string.h>
-#include <io.h>
-#include <direct.h>
-#include <process.h>
-#include <dos.h>
+#include <sys/io.h>
 #include <stdarg.h>
-#include <conio.h>
-#include <bios.h>
 
 #endif
 
 #ifdef __NeXT__
 #define strcmpi strcasecmp
 #define stricmp strcasecmp
-char *getcwd (char *path, int length);
 char *strupr (char *in);
 int filelength (int handle);
 int tell (int handle);

@@ -74,15 +74,15 @@ int		nummisc;
 void ParseState (void)
 {
 	int			j;
-	
+
 	for (j=0 ; j<numstates ; j++)
-		if (!strcmpi(token,statename[j]))
+		if (!strcasecmp(token,statename[j]))
 			Error ("line %i: duplicate state name (%s)",scriptline,token);
 	strcpy (statename[numstates],token);
 
 	GetToken (false);		// sprite
 	for (j=0 ; j<numsprites ; j++)
-		if (!strcmpi(token,spritename[j]))
+		if (!strcasecmp(token,spritename[j]))
 			break;
 	if (j==numsprites)
 	{
@@ -107,7 +107,7 @@ void ParseState (void)
 
 	GetToken (false);		// action
 	for (j=0 ; j<numactions ; j++)
-		if (!strcmpi(token,actionname[j]))
+		if (!strcasecmp(token,actionname[j]))
 			break;
 	if (j==numactions)
 	{
@@ -147,7 +147,7 @@ void ParseState (void)
 void ParseInfo (void)
 {
 	int		i;
-	
+
 	if (token[0] == '$')
 	{
 		GetToken (false);
@@ -190,7 +190,7 @@ int main (void)
 	int		i,j;
 
 	printf ("\nMULTIGEN "VERSION" by John Carmack, copyright (c) 1994 Id Software\n");
-	
+
 	printf ("processing multigen.txt\n");
 	LoadScriptFile ("multigen.txt");
 
@@ -232,8 +232,8 @@ int main (void)
 		strcpy (baseinfo[numinfo].base, token);
 		numinfo++;
 	} while (1);
-		
-	
+
+
 //
 // parse state and info definitions
 //
@@ -245,7 +245,7 @@ int main (void)
 		if (token[0] == 'S' && token[1] == '_')
 			ParseState ();
 		else
-			ParseInfo ();	
+			ParseInfo ();
 	} while (1);
 
 //
@@ -254,7 +254,7 @@ int main (void)
 	for (i=0 ; i<numstates ; i++)
 	{
 		for (j=0 ; j<numstates ; j++)
-			if (!strcmpi(nextname[i],statename[j]))
+			if (!strcasecmp(nextname[i],statename[j]))
 				break;
 		if (j==numstates)
 			printf ("Unresolved nextstate: %s\n",nextname[i]);
@@ -299,7 +299,7 @@ int main (void)
 
 	fprintf (stenum, "extern state_t	states[NUMSTATES];\n");
 	fprintf (stenum, "extern char *sprnames[NUMSPRITES];\n\n");
-	
+
 //
 // write info def
 //
@@ -317,7 +317,7 @@ int main (void)
 	}
 	fprintf (stenum, "} mobjinfo_t;\n\n");
 	fprintf (stenum, "extern mobjinfo_t mobjinfo[NUMMOBJTYPES];\n\n");
-	
+
 	fclose (stenum);
 
 //===========================================
@@ -381,7 +381,7 @@ int main (void)
 				fprintf (stenum, "%s", info[i][j] );
 			else
 				fprintf (stenum, "%s", baseinfo[j].base );
-			
+
 			if (j != numinfo-1)
 				fprintf (stenum, ",");
 			fprintf (stenum,"		// %s\n", baseinfo[j].name);
@@ -392,7 +392,7 @@ int main (void)
 		fprintf (stenum, "\n");
 	}
 	fprintf (stenum, "};\n\n");
-	
+
 	fclose (stenum);
 
 

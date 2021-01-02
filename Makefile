@@ -1,3 +1,4 @@
+OBJDIR = .
 
 WADLINKOBJS=	$(OBJDIR)/wadlink.o \
 				$(OBJDIR)/cmdlib.o \
@@ -40,7 +41,7 @@ $(OBJDIR)/cmpfile.o:	cmpfile.c
 	$(CC) $(CFLAGS) -c cmpfile.c -o $(OBJDIR)/cmpfile.o
 
 ######################	wadlink
-				
+
 wadlink:	$(WADLINKOBJS)
 	$(CC) $(LDFLAGS) $(WADLINKOBJS) -o wadlink $(LIBS)
 

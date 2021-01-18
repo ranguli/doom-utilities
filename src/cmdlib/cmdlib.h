@@ -20,12 +20,19 @@ typedef unsigned char byte;
 
 #define PATHSEPERATOR '/'
 
-void Error(char *error, ...);
+int filelength(int handle);
+int tell(int handle);
 
+void Error(char *error, ...);
+int	CheckParm(char *check, int argc, char *argv[]);
 int SafeOpenRead(char *filename);
+int	SafeOpenWrite (char *filename);
 void SafeRead(int handle, void *buffer, long count);
 void SafeWrite(int handle, void *buffer, long count);
 void *SafeMalloc(long size);
 long LoadFile(char *filename, void **bufferptr);
-
+void SaveFile(char *filename, void *buffer, long count);
+void DefaultExtension(char *path, char *extension);
+void StripFilename(char *path);
+void StripExtension(char *path);
 #endif

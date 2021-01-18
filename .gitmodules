@@ -1,0 +1,3 @@
+[submodule "src/libdoomtools"]
+	path = src/libdoomtools
+	url = https://github.com/smoldoom/libdoomtools
